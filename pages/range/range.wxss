@@ -1,0 +1,45 @@
+@import "../connect/connect.wxss";
+
+.range-card {
+  text-align: center;
+}
+
+.radius-display {
+  margin: 26rpx 0 18rpx;
+}
+
+.radius-value {
+  color: #2e8b57;
+  font-size: 96rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.radius-unit {
+  margin-left: 8rpx;
+  color: rgba(18, 53, 42, 0.72);
+  font-size: 30rpx;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  margin: 8rpx 4rpx 30rpx;
+  color: rgba(18, 53, 42, 0.58);
+  font-size: 24rpx;
+}
+
+.primary-btn[disabled] {
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(18, 53, 42, 0.45);
+}
+
+.tip {
+  margin-top: 20rpx;
+  color: #8a3b12;
+  font-size: 25rpx;
+}
+
+.success-tip {
+  color: #2e8b57;
+}

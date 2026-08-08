@@ -1,0 +1,26 @@
+# WeChat DevTools user-specific settings
+project.private.config.json
+**/project.private.config.json
+
+# Accidental nested DevTools project config
+pages/project.config.json
+
+# Dependencies and generated output
+node_modules/
+miniprogram_npm/
+dist/
+coverage/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+*~

@@ -1,0 +1,55 @@
+{
+  "pages": [
+    "pages/connect/connect",
+    "pages/range/range",
+    "pages/map/map",
+    "pages/stats/stats"
+  ],
+  "window": {
+    "navigationBarTitleText": "宠物活动范围管理",
+    "navigationBarBackgroundColor": "#2E8B57",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#2E8B57"
+  },
+  "tabBar": {
+    "color": "#6B7C72",
+    "selectedColor": "#2E8B57",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/connect/connect",
+        "text": "设备连接",
+        "iconPath": "images/tab/connect.png",
+        "selectedIconPath": "images/tab/connect-active.png"
+      },
+      {
+        "pagePath": "pages/range/range",
+        "text": "范围设置",
+        "iconPath": "images/tab/range.png",
+        "selectedIconPath": "images/tab/range-active.png"
+      },
+      {
+        "pagePath": "pages/map/map",
+        "text": "轨迹地图",
+        "iconPath": "images/tab/map.png",
+        "selectedIconPath": "images/tab/map-active.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计",
+        "iconPath": "images/tab/stats.png",
+        "selectedIconPath": "images/tab/stats-active.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于在地图上展示宠物活动轨迹"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "sitemapLocation": "sitemap.json"
+}

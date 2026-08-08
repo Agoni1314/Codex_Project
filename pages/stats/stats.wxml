@@ -1,0 +1,42 @@
+<view class="page">
+  <view class="header">
+    <view class="title">统计</view>
+    <view class="subtitle">查看宠物活动与报警概况</view>
+  </view>
+
+  <view class="risk-card {{riskClass}}">
+    <view class="risk-label">当前状态</view>
+    <view class="risk-value">{{riskLevel}}</view>
+  </view>
+
+  <view class="grid">
+    <view class="stat-card">
+      <view class="stat-value">{{alarmCount}}</view>
+      <view class="stat-label">累计报警次数</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-value">{{trackCount}}</view>
+      <view class="stat-label">轨迹点数量</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">离线记录</view>
+    <view class="info-row">
+      <text class="info-label">离线时长</text>
+      <text class="info-value">{{offlineTimeText}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">最近轨迹</text>
+      <text class="info-value">{{lastTrackTime}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">说明</view>
+    <view class="desc">报警次数和轨迹数据来自硬件重连后的离线同步结果。蓝牙断开期间，硬件会继续本地记录轨迹和越界报警。</view>
+  </view>
+
+  <button class="ghost-btn" bindtap="loadStats">刷新统计</button>
+  <button class="clear-btn" bindtap="clearStats">清空本地统计</button>
+</view>

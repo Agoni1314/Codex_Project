@@ -1,0 +1,125 @@
+<view class="page">
+  <view class="header">
+    <view class="title">设备连接</view>
+    <view class="subtitle">连接宠物定位硬件，同步离线轨迹</view>
+  </view>
+
+  <view class="status-card">
+    <view class="mode-tabs">
+      <view class="mode-tab {{connectionMode === 'ble' ? 'active' : ''}}" data-mode="ble" bindtap="switchMode">BLE 蓝牙</view>
+      <view class="mode-tab {{connectionMode === 'wifi' ? 'active' : ''}}" data-mode="wifi" bindtap="switchMode">Wi-Fi 实时</view>
+    </view>
+
+    <view class="status-row">
+      <view>
+        <view class="label">当前状态</view>
+        <view class="device-name">{{deviceName || '未选择设备'}}</view>
+      </view>
+      <view class="badge {{connected || wifiConnected ? 'online' : 'offline'}}">{{connected || wifiConnected ? '在线' : statusText}}</view>
+    </view>
+
+    <view wx:if="{{!connected && !wifiConnected}}" class="offline-tip">主人不在家，设备离线记录中</view>
+
+    <view class="summary-grid">
+      <view class="summary-item">
+        <view class="summary-value">{{offlineTrackCount}}</view>
+        <view class="summary-label">轨迹点</view>
+      </view>
+      <view class="summary-item">
+        <view class="summary-value">{{alarmCount}}</view>
+        <view class="summary-label">报警次数</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{connectionMode === 'ble'}}" class="action-row">
+    <button class="primary-btn" loading="{{isScanning}}" disabled="{{isScanning}}" bindtap="startScan">{{isScanning ? '扫描中' : '扫描设备'}}</button>
+    <button class="ghost-btn" wx:if="{{isScanning}}" bindtap="stopScan">停止</button>
+    <button class="ghost-btn" wx:if="{{connected}}" bindtap="disconnectDevice">断开</button>
+  </view>
+
+  <view wx:if="{{connectionMode === 'ble' && isScanning}}" class="search-card">
+    <view class="scan-orbit">
+      <view class="scan-dot"></view>
+    </view>
+    <view>
+      <view class="search-title">正在扫描 BLE 设备</view>
+      <view class="search-desc">请让 ESP32-C3 靠近手机并保持蓝牙广播开启</view>
+    </view>
+  </view>
+
+  <view wx:if="{{connectionMode === 'wifi'}}" class="card">
+    <view class="section-title">Wi-Fi 模块</view>
+    <view class="input-row">
+      <text>搜索端口</text>
+      <input value="{{udpListenPort}}" type="number" placeholder="8898" bindinput="onUdpPortInput" />
+    </view>
+    <view class="action-row compact">
+      <button class="primary-btn" wx:if="{{!udpListening}}" bindtap="startWifiDiscovery">自动搜索</button>
+      <button class="ghost-btn" wx:if="{{udpListening}}" bindtap="stopWifiDiscovery">停止搜索</button>
+    </view>
+
+    <view wx:if="{{udpListening}}" class="search-card wifi-search">
+      <view class="radar">
+        <view class="radar-wave wave-one"></view>
+        <view class="radar-wave wave-two"></view>
+        <view class="radar-core"></view>
+      </view>
+      <view>
+        <view class="search-title">正在搜索 Wi-Fi 模块</view>
+        <view class="search-desc">等待 ESP32-C3 发送 UDP 广播 device_hello</view>
+      </view>
+    </view>
+
+    <view wx:if="{{wifiDevices.length > 0}}" class="wifi-list">
+      <view class="section-title small">发现的模块</view>
+      <view
+        wx:for="{{wifiDevices}}"
+        wx:key="deviceId"
+        class="wifi-item"
+        data-ip="{{item.ip}}"
+        data-port="{{item.port}}"
+        data-name="{{item.name}}"
+        bindtap="useWifiDevice"
+      >
+        <view>
+          <view class="device-title">{{item.name}}</view>
+          <view class="device-id">{{item.ip}}:{{item.port}}</view>
+        </view>
+        <view class="connect-text">连接</view>
+      </view>
+    </view>
+
+    <view class="input-row">
+      <text>IP</text>
+      <input value="{{wifiHost}}" placeholder="192.168.1.88" bindinput="onWifiHostInput" />
+    </view>
+    <view class="input-row">
+      <text>端口</text>
+      <input value="{{wifiPort}}" type="number" placeholder="8899" bindinput="onWifiPortInput" />
+    </view>
+    <view class="action-row compact">
+      <button class="primary-btn" wx:if="{{!wifiConnected}}" bindtap="connectWifiModule">连接 Wi-Fi 模块</button>
+      <button class="ghost-btn" wx:if="{{wifiConnected}}" bindtap="disconnectWifiModule">断开 Wi-Fi</button>
+    </view>
+    <view class="protocol-tip">模块需发送 JSON + 换行，例如 {"type":"track","lat":31.2304,"lng":121.4737}</view>
+  </view>
+
+  <view wx:if="{{connectionMode === 'ble'}}" class="card">
+    <view class="section-title">附近设备</view>
+    <view wx:if="{{devices.length === 0}}" class="empty">点击“扫描设备”查找宠物定位器</view>
+    <view wx:for="{{devices}}" wx:key="deviceId" class="device-item" data-device-id="{{item.deviceId}}" data-name="{{item.name}}" bindtap="connectDevice">
+      <view>
+        <view class="device-title">{{item.name}}</view>
+        <view class="device-id">{{item.deviceId}}</view>
+      </view>
+      <view class="rssi">{{item.RSSI}} dBm</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">通讯日志</view>
+    <view wx:if="{{logList.length === 0}}" class="empty">暂无日志</view>
+    <view wx:for="{{logList}}" wx:key="*this" class="log-item">{{item}}</view>
+  </view>
+</view>

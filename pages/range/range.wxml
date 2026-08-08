@@ -1,0 +1,41 @@
+<view class="page">
+  <view class="header">
+    <view class="title">范围设置</view>
+    <view class="subtitle">设置宠物允许活动半径</view>
+  </view>
+
+  <view class="status-card">
+    <view class="status-row">
+      <view>
+        <view class="label">当前设备</view>
+        <view class="device-name">{{deviceName || '未连接设备'}}</view>
+      </view>
+      <view class="badge {{connected ? 'online' : 'offline'}}">{{connected ? '在线' : '离线'}}</view>
+    </view>
+  </view>
+
+  <view class="card range-card">
+    <view class="section-title">活动半径</view>
+    <view class="radius-display">
+      <text class="radius-value">{{radius}}</text>
+      <text class="radius-unit">米</text>
+    </view>
+
+    <slider min="{{minRadius}}" max="{{maxRadius}}" step="1" value="{{radius}}" activeColor="#2E8B57" backgroundColor="rgba(46, 139, 87, 0.18)" block-color="#ffffff" block-size="26" bindchange="onRadiusChange" bindchanging="onRadiusChange" />
+
+    <view class="range-labels">
+      <text>{{minRadius}} 米</text>
+      <text>{{maxRadius}} 米</text>
+    </view>
+
+    <button class="primary-btn" loading="{{sending}}" disabled="{{sending || !connected}}" bindtap="sendRadiusSetting">下发设置</button>
+    <view wx:if="{{connected}}" class="tip success-tip">当前通过 {{connectionType === 'wifi' ? 'WiFi/TCP' : 'BLE'}} 下发</view>
+    <view wx:if="{{!connected}}" class="tip">请先在“设备连接”页面连接宠物定位器</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">下发日志</view>
+    <view wx:if="{{logList.length === 0}}" class="empty">暂无日志</view>
+    <view wx:for="{{logList}}" wx:key="*this" class="log-item">{{item}}</view>
+  </view>
+</view>

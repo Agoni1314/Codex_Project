@@ -1,0 +1,41 @@
+<view class="page">
+  <map
+    id="petMap"
+    class="map"
+    latitude="{{latitude}}"
+    longitude="{{longitude}}"
+    scale="17"
+    markers="{{markers}}"
+    polyline="{{polyline}}"
+    circles="{{circles}}"
+    show-location
+  ></map>
+
+  <view class="top-panel">
+    <view>
+      <view class="title">轨迹地图</view>
+      <view class="subtitle">查看宠物离线与实时活动轨迹</view>
+    </view>
+  </view>
+
+  <view class="info-card">
+    <view class="info-grid">
+      <view class="info-item">
+        <view class="info-value">{{trackCount}}</view>
+        <view class="info-label">轨迹点</view>
+      </view>
+      <view class="info-item">
+        <view class="info-value">{{radius}}</view>
+        <view class="info-label">半径 / 米</view>
+      </view>
+    </view>
+
+    <view class="last-time">最近轨迹：{{lastSyncText}}</view>
+    <view class="last-time">当前经纬度：{{locationText}}</view>
+
+    <view class="action-row">
+      <button class="primary-btn" bindtap="refreshMap">刷新</button>
+      <button class="ghost-btn" bindtap="clearLocalTracks">清空</button>
+    </view>
+  </view>
+</view>
