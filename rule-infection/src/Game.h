@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Map.h"
+#include "HealthReminderUI.h"
 #include "RuleEditorUI.h"
 #include "RuleEconomy.h"
 #include "RuleSystem.h"
@@ -33,4 +34,6 @@ private:
     GridPosition mouseGrid_{-1, -1};
     bool mouseInsideMap_{false};
     bool simulationPaused_{false};
+    HealthReminderUI healthReminderUI_;
+    bool showingHealthReminder_{true};
 };

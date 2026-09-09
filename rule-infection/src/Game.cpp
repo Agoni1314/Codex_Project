@@ -19,11 +19,24 @@ void Game::Init()
 {
     InitWindow(ScreenWidth, ScreenHeight, "Rule Infection");
     SetTargetFPS(TargetFps);
-    RestartSimulation();
+    healthReminderUI_.Init();
 }
 
 void Game::Update()
 {
+    // 确认前不初始化世界或调度游戏输入；确认点击也不会穿透到地图。
+    if (showingHealthReminder_)
+    {
+        if (healthReminderUI_.ShouldContinue(
+                GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT),
+                IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)))
+        {
+            showingHealthReminder_ = false;
+            RestartSimulation();
+        }
+        return;
+    }
+
     const float deltaTime = GetFrameTime();
 
     if (IsKeyPressed(KEY_SPACE))
@@ -101,6 +114,13 @@ void Game::Draw() const
 {
     BeginDrawing();
     ClearBackground(Color{24, 28, 36, 255});
+
+    if (showingHealthReminder_)
+    {
+        healthReminderUI_.Draw();
+        EndDrawing();
+        return;
+    }
 
     map_.Draw(mouseInsideMap_ ? &mouseGrid_ : nullptr);
     const CreatureManager& creatureManager = simulation_.GetCreatureManager();
@@ -213,5 +233,6 @@ void Game::RestartSimulation()
 
 void Game::Shutdown()
 {
+    healthReminderUI_.Shutdown();
     CloseWindow();
 }

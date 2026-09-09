@@ -40,11 +40,16 @@ target_link_libraries(rule_infection_core PUBLIC raylib)
 add_executable(rule_infection
     src/main.cpp
     src/Game.cpp
+    src/HealthReminderUI.cpp
     src/RuleEditorUI.cpp
     src/WorldStatsUI.cpp
 )
 
 target_link_libraries(rule_infection PRIVATE rule_infection_core)
+
+if(MSVC)
+    target_compile_options(rule_infection PRIVATE /utf-8)
+endif()
 
 if(WIN32)
     # 保留控制台窗口，便于初学阶段查看 raylib 的启动或错误信息。
@@ -54,6 +59,16 @@ endif()
 include(CTest)
 
 if(BUILD_TESTING)
+    add_executable(health_reminder_tests
+        tests/HealthReminderTests.cpp
+        src/HealthReminderUI.cpp
+    )
+    target_link_libraries(health_reminder_tests PRIVATE rule_infection_core)
+    if(MSVC)
+        target_compile_options(health_reminder_tests PRIVATE /utf-8)
+    endif()
+    add_test(NAME health_reminder_confirmation COMMAND health_reminder_tests)
+
     add_executable(map_tests tests/MapTests.cpp)
     target_link_libraries(map_tests PRIVATE rule_infection_core)
     add_test(NAME map_data_and_coordinates COMMAND map_tests)
